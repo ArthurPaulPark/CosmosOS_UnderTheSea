@@ -1,0 +1,13 @@
+{
+  "members": [
+    "lead_3h",
+    "lead_6h",
+    "lead_9h",
+    "lead_12h",
+    "lead_18h",
+    "lead_24h"
+  ],
+  "combination": "one independent model per lead time (3, 6, 9, 12, 18, 24 h)",
+  "target": "residual = future_hs - latest_hs",
+  "note": "Final hs_pred = max(0, latest_hs + predicted residual)."
+}

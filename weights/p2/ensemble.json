@@ -1,0 +1,10 @@
+{
+  "members": [
+    "layer_2",
+    "layer_3",
+    "layer_4"
+  ],
+  "combination": "one independent model per masked layer (2, 3, 4)",
+  "target": "residual = temp - vertical_linear_interp",
+  "note": "Final temp = vertical_linear_interp + predicted residual."
+}

@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+output/
+.DS_Store
+
+# 대회 데이터는 재배포가 금지되어 저장소에 두지 않는다.
+P1_qc_anomaly/
+P2_profile_restore/
+P3_wave_forecast/
+
+# 우리 모델의 출력인 제출 답안은 코드와 함께 버전 관리한다.
+!submissions/*.csv

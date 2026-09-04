@@ -1,0 +1,9 @@
+{
+  "members": [
+    "preset_standard",
+    "preset_full"
+  ],
+  "combination": "arithmetic mean of P(anomaly)",
+  "decision_threshold": 0.024798106725119933,
+  "note": "Final label = 1 when the averaged probability >= decision_threshold."
+}
