@@ -61,7 +61,9 @@
     "faithful_validation_rmse": 0.785,
     "multi_window_mean_rmse": 0.9277,
     "validation_score_optimistic_boundary": 0.453261,
-    "validation_note": "validation_score changed 0.453261 -> 0.607910 on 2026-09-01. The model, the submission and its hash are unchanged; only the measurement was corrected."
+    "validation_note": "validation_score changed 0.453261 -> 0.607910 on 2026-09-01. The model, the submission and its hash are unchanged; only the measurement was corrected.",
+    "leaderboard_score": 27.190927,
+    "leaderboard_note": "Public leaderboard score recorded 2026-09-04. The metric is the organiser's composite point scale, not RMSE; the hidden final score is still unknown."
   },
   "problem_3": {
     "status": "candidate",
@@ -104,6 +106,8 @@
     },
     "selection_note": "Wind-forcing ratios improved the primary holdout AND all three rolling folds, so unlike the subsampling step this needed no judgement call. Primary now also beats the original pre-subsampling candidate (0.737349).",
     "rolling_wind_bearing_rmse": 0.749411,
-    "fix_note": "I-ORS and S-ORS have atmospheric records only from 2025-01 while their wave records start 2024-01, so 4,749 of 10,476 training cases carry no wind at all, while 195 of the 200 scored cases have it at 97% coverage. Those cases are now weighted 0.25 instead of 1.0. Dropping them outright was measured first and lost (rolling 0.7558 -> 0.7685) because it halves the training set. The 0.25 is empirical, not a matched rate - matching the scored 97% share would need about 0.04, close to the dropping that failed."
+    "fix_note": "I-ORS and S-ORS have atmospheric records only from 2025-01 while their wave records start 2024-01, so 4,749 of 10,476 training cases carry no wind at all, while 195 of the 200 scored cases have it at 97% coverage. Those cases are now weighted 0.25 instead of 1.0. Dropping them outright was measured first and lost (rolling 0.7558 -> 0.7685) because it halves the training set. The 0.25 is empirical, not a matched rate - matching the scored 97% share would need about 0.04, close to the dropping that failed.",
+    "leaderboard_score": 23.413967,
+    "leaderboard_note": "Public leaderboard score recorded 2026-09-04. The metric is the organiser's composite point scale, not RMSE; the hidden final score is still unknown."
   }
 }
