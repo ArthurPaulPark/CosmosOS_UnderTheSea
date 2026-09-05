@@ -183,9 +183,9 @@ P3_wave_forecast/    train_wave.csv, train_atmos.csv, test_context.parquet,
 개별 실행:
 
 ```bash
-python3 examples/baseline_submission.py        # P1, 약 6분
-python3 examples/reconstruction_submission.py  # P2, 약 30초
-python3 examples/wave_forecast_submission.py   # P3, 약 30초
+python3 run/baseline_submission.py        # P1, 약 6분
+python3 run/reconstruction_submission.py  # P2, 약 30초
+python3 run/wave_forecast_submission.py   # P3, 약 30초
 ```
 
 ### 데이터 없이 확인할 수 있는 것
@@ -215,7 +215,7 @@ P1의 결정 임계값 `0.0248`은 검증 분할의 F1 최대점이 아니라 §
 ## 5. 구조
 
 ```
-examples/                   문제별 제출물 생성 진입점 3개
+run/                   문제별 제출물 생성 진입점 3개
 cosmos_os/
   competitions/ocean/
     adapter.py              P1 파이프라인 (분할·학습·임계값·제출)

@@ -8,15 +8,15 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 echo "### P1: Anomaly QC (~6 min)"
-python3 examples/baseline_submission.py
+python3 run/baseline_submission.py
 
 echo
 echo "### P2: Vertical Reconstruction (~30 s)"
-python3 examples/reconstruction_submission.py
+python3 run/reconstruction_submission.py
 
 echo
 echo "### P3: Wave Forecast (~30 s)"
-python3 examples/wave_forecast_submission.py
+python3 run/wave_forecast_submission.py
 
 echo
 echo "### Verifying against the registered candidates"
