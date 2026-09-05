@@ -48,6 +48,9 @@ All three submissions reproduced byte-for-byte.
 
 하나라도 어긋나면 `REPRODUCTION FAILED`를 출력하고 종료 코드 1로 끝납니다.
 
+윈도우에서 셸 스크립트를 쓰기 어려우시면 7장 「윈도우에서 실행할 때」의 명령 네 줄로
+같은 절차를 밟으실 수 있습니다.
+
 > `weights/`는 실행에 쓰이지 않습니다. 재현은 배포된 데이터로 처음부터 다시 학습해서
 > 이뤄지고, `weights/`는 규정이 요구하는 학습 결과물을 따로 내보낸 것입니다.
 > 가중치를 불러와 답안을 찍어내는 구조가 아닙니다.
@@ -465,7 +468,46 @@ P3_wave_forecast/    train_wave.csv, train_atmos.csv, test_context.parquet,
 python3 run/baseline_submission.py        # P1, 약 6분
 python3 run/reconstruction_submission.py  # P2, 약 30초
 python3 run/wave_forecast_submission.py   # P3, 약 30초
+python3 verify_hashes.py                  # 해시 대조
 ```
+
+### 윈도우에서 실행할 때
+
+`run_all.sh`는 셸 스크립트라 Git Bash나 WSL이 필요합니다. 둘 다 없으시면 PowerShell이나
+명령 프롬프트에서 같은 순서를 그대로 실행하시면 됩니다. 결과는 동일합니다.
+
+```powershell
+pip install -r requirements.txt
+
+python run\baseline_submission.py         # P1, 약 6분
+python run\reconstruction_submission.py   # P2, 약 30초
+python run\wave_forecast_submission.py    # P3, 약 30초
+
+python verify_hashes.py                    # run_all.sh 마지막 단계와 같은 검사
+```
+
+`verify_hashes.py`는 `run_all.sh`가 끝에서 호출하는 바로 그 스크립트입니다. 세 답안의
+SHA256을 `artifacts/candidate_registry.json`과 대조하고, 어긋나면 종료 코드 1로 끝납니다.
+운영체제와 무관하게 같은 판정을 냅니다.
+
+파이썬 코드는 경로를 전부 `pathlib`로 다루고 파일 입출력에 UTF-8을 명시하고 있어, 경로
+구분자나 한국어 윈도우의 기본 인코딩(cp949) 때문에 깨지는 곳은 없습니다.
+
+### 코어 수가 달라도 같은 결과가 나옵니다
+
+학습은 `n_jobs=-1`이라 머신의 코어를 전부 씁니다. 스레드 수가 달라지면 부동소수점 합산
+순서가 바뀌어 확률 끝자리가 흔들릴 수 있고, P1은 상위 3.62%를 자르는 방식이라 경계에 걸친
+행이 뒤집히면 답안 파일과 해시가 달라집니다. 운영진 환경의 코어 수는 저희와 다를 테니
+이 부분을 실제로 확인했습니다.
+
+| 조건 | P1 답안 SHA256 |
+|---|---|
+| 10스레드 (코어 전체) | `e302a5a9ab1d724c…` |
+| 2스레드 (`OMP_NUM_THREADS=2`) | `e302a5a9ab1d724c…` |
+
+같은 해시가 나왔습니다. 이 데이터와 설정에서는 LightGBM이 스레드 수와 무관하게 같은 트리를
+만듭니다. `requirements.txt`가 `lightgbm==4.6.0`과 `scikit-learn==1.9.0`을 정확한 버전으로
+고정하고 있으므로, 같은 버전을 설치하시면 운영체제가 달라도 같은 결과를 얻으실 수 있습니다.
 
 ### 데이터 없이 확인할 수 있는 것
 
@@ -474,7 +516,9 @@ python3 run/wave_forecast_submission.py   # P3, 약 30초
 
 ```bash
 # 제출 답안이 등록된 해시와 맞는지
-shasum -a 256 submissions/*.csv
+shasum -a 256 submissions/*.csv        # macOS
+sha256sum submissions/*.csv            # Linux
+# Windows PowerShell:  Get-FileHash submissions\*.csv -Algorithm SHA256
 
 # 학습된 모델을 텍스트로 열기. 트리 구조와 피처 이름이 그대로 들어 있습니다
 head -20 weights/p1/preset_standard/booster_0.txt
@@ -515,7 +559,8 @@ cosmos_os/
 weights/                      학습된 부스터 11개 + 피처 스키마 + SHA256 매니페스트
 submissions/                  제출한 예측 답안 3종
 artifacts/                    후보 레지스트리. 재현 대조용 해시와 선정 근거
-run_all.sh                    세 답안 재현 + 해시 검증
+run_all.sh                    세 답안 재현 + 해시 검증 (macOS·리눅스)
+verify_hashes.py              해시 대조만 따로. 윈도우에서는 이것을 직접 호출합니다
 ```
 
 ### 어댑터의 8단계
