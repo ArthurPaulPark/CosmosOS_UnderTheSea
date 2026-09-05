@@ -11,6 +11,47 @@
 
 ---
 
+## 0. 심사용 요약
+
+제출 모델이 업로드한 예측 답안을 재현하는지 확인하는 절차입니다.
+
+| 규정 항목 | 이 제출물 |
+|---|---|
+| 코드 | `run/` 실행 진입점 3개 + `cosmos_os/` 파이프라인 |
+| 학습 가중치 | `weights/` — LightGBM 부스터 11개 + 피처 스키마 + SHA256 매니페스트 |
+| 업로드한 예측 답안 | `submissions/submission_p1.csv` · `_p2` · `_p3` (리더보드 업로드본과 동일) |
+| 외부 데이터 | 사용하지 않음 |
+| 사전학습 가중치 | 사용하지 않음 |
+| 실행 시간 | 세 문제 합계 약 7분 (대회 제한 6시간) |
+| 네트워크 | 실행 중 외부 접속 없음 — 오프라인 환경에서 그대로 동작 |
+
+### 검증 3단계
+
+```bash
+# 1) 대회 데이터를 이 폴더 루트에 배치한다 (§4 「데이터 배치」)
+# 2) 의존성 설치
+pip install -r requirements.txt
+# 3) 재현 실행 — 끝에서 SHA256을 자동 대조한다
+./run_all.sh
+```
+
+성공하면 마지막에 다음이 출력됩니다.
+
+```
+problem_1: e302a5a9…  output/submission_phase10_5_safe.csv  [OK]
+problem_2: 3933aea1…  output/reconstruction/submission_phase12_6.csv  [OK]
+problem_3: f223d3fe…  output/forecasting/submission_phase13.csv  [OK]
+
+All three submissions reproduced byte-for-byte.
+```
+
+하나라도 어긋나면 `REPRODUCTION FAILED`를 출력하고 종료 코드 1로 끝납니다.
+
+> `weights/`는 실행에 쓰이지 않습니다. 재현은 배포된 데이터로 처음부터 재학습해서 이뤄지며,
+> `weights/`는 규정이 요구하는 학습 결과물을 별도로 내보낸 것입니다.
+
+---
+
 ## 1. 결과
 
 **Public 리더보드** — 주최측이 채점한 값이다. 세 문제 모두 제출했다.
@@ -170,6 +211,10 @@ P2_profile_restore/  observations.csv, test_index.csv, sample_submission.csv
 P3_wave_forecast/    train_wave.csv, train_atmos.csv, test_context.parquet,
                      test_index.csv, sample_submission.csv
 ```
+
+배포된 폴더를 통째로 두면 된다. `baseline_persistence.csv`가 함께 있으면 P3 파이프라인이
+자체 지속성 계산을 공식 베이스라인과 대조해 1,200건 전부 일치하는지 추가로 확인한다
+(없어도 재현에는 지장이 없다).
 
 ### 실행
 
