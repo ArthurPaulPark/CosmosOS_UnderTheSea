@@ -1,6 +1,11 @@
-# Verified with Python 3.14 on macOS (2026-08-25)
+# 제출 답안을 만든 환경과 동일하게 고정합니다. 재현 검증에서 한 줄이라도 버전이 어긋나면
+# pandas·numpy의 롤링/그룹 연산 결과가 달라져 피처가 바뀌고, 예측도 바뀝니다.
+# 확인 환경: Python 3.14, macOS(arm64) 및 Linux(x86_64)
 lightgbm==4.6.0
 scikit-learn==1.9.0
-pandas>=2.0
-numpy>=1.24
-pyarrow>=14.0
+pandas==3.0.2
+numpy==2.4.3
+pyarrow==24.0.0
+scipy==1.17.1
+# pandas.to_markdown()이 EDA 단계에서 요구합니다. 없으면 P1이 시작하자마자 멈춥니다.
+tabulate==0.10.0
